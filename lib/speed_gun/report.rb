@@ -17,4 +17,8 @@ class SpeedGun::Report
     @sources = []
     @events = []
   end
+
+  def record(event)
+    @events.push(event)
+  end
 end

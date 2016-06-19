@@ -6,6 +6,7 @@ AllCops:
     - '**/*.gemspec'
   Exclude:
     - 'bin/**/*'
+    - 'example/**/*'
     - 'vendor/bundle/**/*'
     - 'node_modules/**/*'
   TargetRubyVersion: 2.3

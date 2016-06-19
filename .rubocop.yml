@@ -1,0 +1,61 @@
+AllCops:
+  Include:
+    - '**/Gemfile'
+    - '**/Rakefile'
+    - '**/config.ru'
+    - '**/*.gemspec'
+  Exclude:
+    - 'bin/**/*'
+    - 'vendor/bundle/**/*'
+    - 'node_modules/**/*'
+  TargetRubyVersion: 2.3
+  DisplayCopNames: true
+
+Rails:
+  Enabled: true
+
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
+
+Style/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
+  Exclude:
+    - 'config/application.rb'
+
+Style/Documentation:
+  Enabled: false
+
+Style/EmptyLines:
+  Exclude:
+    - '**/Gemfile'
+
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - '**/Gemfile'
+
+Style/FileName:
+  Exclude:
+    - '**/Gemfile'
+    - '**/Guardfile'
+
+Style/RegexpLiteral:
+  EnforcedStyle: percent_r
+  AllowInnerSlashes: false
+
+Metrics/LineLength:
+  Max: 240
+
+Metrics/MethodLength:
+  Exclude:
+    - 'db/migrate/*'
+  Max: 20
+
+Metrics/AbcSize:
+  Max: 35
+
+Rails/Output:
+  Exclude:
+    - 'config/unicorn.rb'

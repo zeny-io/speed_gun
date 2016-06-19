@@ -9,13 +9,23 @@ class SpeedGun::Config
   # @return [String] Console and API endpoint prefix
   attr_accessor :prefix
 
+  attr_accessor :skip_paths
+  attr_accessor :lineprof_paths
+
   def initialize
     @enabled = true
     @prefix = DEFAULT_PREFIX
+    @skip_paths = []
+    @lineprof_paths = []
+    @ignored_profilers = []
   end
 
   # @return [Boolean] Enabled SpeedGun
   def enabled?
     enabled
+  end
+
+  def disabled?
+    !enabled?
   end
 end

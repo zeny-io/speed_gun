@@ -6,6 +6,12 @@ class SpeedGun::Profiler
     new.profile(*args, &block)
   end
 
+  def self.ignore?
+    SpeedGun.config.ignored_profilers.any? do |ignore|
+      name.include?(ignore)
+    end
+  end
+
   def profile(name = self.class.name, payload = {}, &block)
     started_at = Time.now
 
@@ -13,7 +19,7 @@ class SpeedGun::Profiler
     result = yield(event)
     event.finish!
 
-    SpeedGun.record(event)
+    SpeedGun.record(event) unless self.class.ignore?
 
     result
   end

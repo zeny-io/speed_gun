@@ -9,12 +9,13 @@ class Rack::SpeedGun
   end
 
   def call(env)
-    return @app.call(env) unless SpeedGun.config.enabled?
+    return @app.call(env) if SpeedGun.config.disabled? || SpeedGun.config.skip_paths.any? { |path| path === env['PATH_INFO'] }
 
     SpeedGun.current_report = SpeedGun::Report.new
 
     SpeedGun::Profiler::RackProfiler.profile(env['PATH_INFO'], rack: rack_info(env), request: request_info(env)) do |event|
       res = SpeedGun::Profiler::LineProfiler.profile { @app.call(env) }
+      res[1]['X-Speed-Gun-Report'] = SpeedGun.current_report.id
       event.payload[:response] = {
         status: res[0],
         headers: res[1]
@@ -22,7 +23,6 @@ class Rack::SpeedGun
       res
     end
   ensure
-    #p SpeedGun.current_report
     SpeedGun.current_report = nil
   end
 

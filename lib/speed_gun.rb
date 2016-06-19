@@ -30,5 +30,9 @@ module SpeedGun
     def record(event)
       current_report && current_report.record(event)
     end
+
+    def get_report(id)
+      config.store.load("SpeedGun::Report/#{id}")
+    end
   end
 end

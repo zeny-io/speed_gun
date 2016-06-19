@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rblineprof'
 require 'speed_gun/source'
 require 'speed_gun/profiler'
@@ -11,7 +12,7 @@ class SpeedGun::Profiler::LineProfiler < SpeedGun::Profiler
     end
   end
 
-  def profile(*args, &block)
+  def profile(*_args)
     return yield if self.class.ignore?
 
     result = nil
@@ -25,7 +26,7 @@ class SpeedGun::Profiler::LineProfiler < SpeedGun::Profiler
   def store(lineprofiled)
     lineprofiled.each_pair do |file, linesamples|
       source = SpeedGun::Source.new(file, linesamples)
-      SpeedGun.current_report.sources.push(source) unless source.lines.empty?
+      SpeedGun.current_report.source(source) unless source.lines.empty?
     end
   end
 end

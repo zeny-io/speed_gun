@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rack'
 require 'speed_gun'
 require 'speed_gun/profiler/rack_profiler'
@@ -9,7 +10,7 @@ class Rack::SpeedGun
   end
 
   def call(env)
-    return @app.call(env) if SpeedGun.config.disabled? || SpeedGun.config.skip_paths.any? { |path| path === env['PATH_INFO'] }
+    return @app.call(env) if SpeedGun.config.disabled? || skip?(env['PATH_INFO'])
 
     SpeedGun.current_report = SpeedGun::Report.new
 
@@ -23,10 +24,29 @@ class Rack::SpeedGun
       res
     end
   ensure
+    if SpeedGun.current_report
+      SpeedGun.config.logger.debug("Speed Gun ID: #{SpeedGun.current_report.id}")
+      Thread.start(SpeedGun.current_report) do |report|
+        SpeedGun.config.store.store(report)
+      end
+    end
     SpeedGun.current_report = nil
   end
 
   private
+
+  def skip?(path_info)
+    SpeedGun.config.skip_paths.any? do |path|
+      case path
+      when String
+        path_info.start_with?(path)
+      when Regexp
+        path_info =~ path
+      else
+        false
+      end
+    end
+  end
 
   def rack_info(env)
     {

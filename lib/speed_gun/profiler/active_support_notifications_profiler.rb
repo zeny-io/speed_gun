@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'speed_gun/profiler'
 
 class SpeedGun::Profiler::ActiveSupportNotificatiosProfiler < SpeedGun::Profiler
@@ -8,8 +9,8 @@ class SpeedGun::Profiler::ActiveSupportNotificatiosProfiler < SpeedGun::Profiler
     end
   end
 
-  def self.record(event, name, started, ended, id, payload, ignore_payload)
-    name = "#{self.name}.#{name.sub(event, '\1')}"
+  def self.record(event, name, started, ended, _id, payload, ignore_payload)
+    name = "#{event}.#{name}"
 
     payload = payload.symbolize_keys
 
@@ -24,6 +25,10 @@ class SpeedGun::Profiler::ActiveSupportNotificatiosProfiler < SpeedGun::Profiler
   end
 
   def self.backtrace
-    Rails.backtrace_cleaner.clean(caller[2..-1])
+    Rails.backtrace_cleaner.clean(caller[2..-1]).map do |called|
+      filename, line, trace = *called.split(':', 3)
+      filename = File.expand_path(filename)
+      [filename, line.to_i, trace]
+    end
   end
 end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'speed_gun'
 require 'speed_gun/event'
 
@@ -12,7 +13,7 @@ class SpeedGun::Profiler
     end
   end
 
-  def profile(name = self.class.name, payload = {}, &block)
+  def profile(name = self.class.name, payload = {})
     started_at = Time.now
 
     event = SpeedGun::Event.new(name, payload, started_at)

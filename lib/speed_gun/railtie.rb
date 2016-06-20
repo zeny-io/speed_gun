@@ -11,8 +11,11 @@ class SpeedGun::Railtie < ::Rails::Railtie
     SpeedGun.configure do |config|
       config.logger = Rails.logger
       config.store = SpeedGun::Store::FileStore.new(Rails.root.join('tmp/speed_gun').to_s)
+      config.lineprof_paths.push(Rails.root.to_s)
       config.skip_paths.push(app.config.assets.prefix)
     end
+
+    require 'speed_gun/profiler/active_support_profiler'
 
     ActiveSupport.on_load(:action_controller) do
       require 'speed_gun/profiler/action_controller_profiler'
@@ -24,6 +27,14 @@ class SpeedGun::Railtie < ::Rails::Railtie
 
     ActiveSupport.on_load(:active_record) do
       require 'speed_gun/profiler/active_record_profiler'
+    end
+
+    ActiveSupport.on_load(:action_mailer) do
+      require 'speed_gun/profiler/action_mailer_profiler'
+    end
+
+    ActiveSupport.on_load(:active_job) do
+      require 'speed_gun/profiler/active_job_profiler'
     end
   end
 end

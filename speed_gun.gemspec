@@ -20,10 +20,14 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'semantic'
-  spec.add_dependency 'rblineprof'
-  spec.add_dependency 'rack'
   spec.add_dependency 'msgpack'
+  spec.add_dependency 'rack'
+  spec.add_dependency 'rblineprof'
+  spec.add_dependency 'sass'
+  spec.add_dependency 'semantic'
+  spec.add_dependency 'sinatra'
+  spec.add_dependency 'sinatra-partial'
+  spec.add_dependency 'slim'
 
   spec.add_development_dependency 'bundler', '~> 1.12'
   spec.add_development_dependency 'rake', '~> 11.0'

@@ -13,10 +13,13 @@ html
           = @report.id
           span.duration-ms= "% 4.1fms" % (@report.duration * 1000.0)
         .tabs
-          a.tab-sources(href="#sources") Sources
           a.tab-events(href="#events") Events
+          a.tab-sources(href="#sources") Sources
 
       #details
+        #events.active
+          == partial('events', locals: { events: @events })
+
         #sources
           #source-list
             - @report.sources.each do |source|
@@ -51,7 +54,4 @@ html
                     .line-code.header Code
                     - source.lines.each do |line|
                       .line-code(id="line-code-#{line_id(source.file, line.line)}")= line.code
-
-        #events.active
-          == partial('events', locals: { events: @events })
 

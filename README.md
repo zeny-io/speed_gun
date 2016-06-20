@@ -1,8 +1,12 @@
 # SpeedGun
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/speed_gun`. To experiment with that code, run `bin/console` for an interactive prompt.
+[![Gem Version](https://badge.fury.io/rb/speed_gun.svg)](http://badge.fury.io/rb/speed_gun)
 
-TODO: Delete this and the text above, and describe your gem
+**Work In Progress**
+
+> I feel the need... the need for speed!
+
+SpeedGun is a more better performance measurement tool for Rails and Rack applications.
 
 ## Installation
 
@@ -14,11 +18,9 @@ gem 'speed_gun'
 
 And then execute:
 
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install speed_gun
+```shell
+$ bundle install
+```
 
 ## Usage
 
@@ -32,7 +34,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/speed_gun.
+Bug reports and pull requests are welcome on GitHub at https://github.com/zeny-io/speed_gun.
 
 
 ## License

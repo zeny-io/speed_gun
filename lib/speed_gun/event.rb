@@ -13,6 +13,7 @@ class SpeedGun::Event
   attr_reader :started_at
   # @return [Time, nil] Finished time of event
   attr_reader :finished_at
+  attr_reader :children
 
   def self.from_hash(hash, id = nil)
     new(
@@ -31,6 +32,7 @@ class SpeedGun::Event
     @payload = payload
     @started_at = started_at
     @finished_at = finished_at
+    @children = []
   end
 
   def finish!
@@ -39,6 +41,10 @@ class SpeedGun::Event
 
   def finished?
     @finished_at
+  end
+
+  def roughly_finished_at
+    finished_at || started_at
   end
 
   def duration

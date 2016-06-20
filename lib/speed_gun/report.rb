@@ -44,6 +44,18 @@ class SpeedGun::Report
     @sources.push(source)
   end
 
+  def nearlest_event_started_at
+    @events.sort_by(&:started_at).first.started_at
+  end
+
+  def latest_event_finished_at
+    @events.sort_by { |event| event.roughly_finished_at.to_f * -1 }.first.roughly_finished_at
+  end
+
+  def duration
+    latest_event_finished_at.to_f - nearlest_event_started_at.to_f
+  end
+
   def to_hash
     {
       sources: sources.map { |source| [ source.id, source.to_hash ] },

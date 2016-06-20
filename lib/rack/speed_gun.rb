@@ -1,20 +1,24 @@
 # frozen_string_literal: true
 require 'rack'
 require 'speed_gun'
+require 'speed_gun/app'
 require 'speed_gun/profiler/rack_profiler'
 require 'speed_gun/profiler/line_profiler'
 
 class Rack::SpeedGun
   def initialize(app)
     @app = app
+
   end
 
   def call(env)
     return @app.call(env) if SpeedGun.config.disabled? || skip?(env['PATH_INFO'])
 
+    return call_speed_gun_app(env) if under_speed_gun?(env)
+
     SpeedGun.current_report = SpeedGun::Report.new
 
-    SpeedGun::Profiler::RackProfiler.profile(env['PATH_INFO'], rack: rack_info(env), request: request_info(env)) do |event|
+    SpeedGun::Profiler::RackProfiler.profile('rack', rack: rack_info(env), request: request_info(env)) do |event|
       res = SpeedGun::Profiler::LineProfiler.profile { @app.call(env) }
       res[1]['X-Speed-Gun-Report'] = SpeedGun.current_report.id
       event.payload[:response] = {
@@ -26,6 +30,9 @@ class Rack::SpeedGun
   ensure
     if SpeedGun.current_report
       SpeedGun.config.logger.debug("Speed Gun ID: #{SpeedGun.current_report.id}")
+      SpeedGun.config.logger.debug(
+        "Check out here: #{base_url(env)}/reports/#{SpeedGun.current_report.id}"
+      ) if SpeedGun.config.webapp
       Thread.start(SpeedGun.current_report) do |report|
         SpeedGun.config.store.store(report)
       end
@@ -34,6 +41,16 @@ class Rack::SpeedGun
   end
 
   private
+
+  def under_speed_gun?(env)
+    SpeedGun.config.webapp && env['PATH_INFO'].match(/\A#{Regexp.escape(SpeedGun.config.prefix)}/)
+  end
+
+  def call_speed_gun_app(env)
+    env['PATH_INFO'].sub!(/\A#{Regexp.escape(SpeedGun.config.prefix)}/, '')
+
+    SpeedGun::App.call(env)
+  end
 
   def skip?(path_info)
     SpeedGun.config.skip_paths.any? do |path|
@@ -72,5 +89,12 @@ class Rack::SpeedGun
       end
     end
     headers
+  end
+
+  def base_url(env)
+    scheme = env['rack.url_scheme']
+    host = env['HTTP_HOST'] || "#{env['SERVER_NAME'] || env['SERVER_ADDR']}:#{env['SERVER_PORT']}"
+
+    "#{scheme}://#{host}#{SpeedGun.config.prefix}"
   end
 end

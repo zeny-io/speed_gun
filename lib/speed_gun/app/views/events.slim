@@ -1,0 +1,11 @@
+- events.each do |event|
+  .event(id="event-#{event.id}")
+    .event-info
+      h3.event-name
+        a(href="#event-#{event.id}")
+          = event.name
+          span.duration-ms= "%06.1fms" % (event.duration * 1000.0)
+      .event-payload
+        == partial('payload', locals: { name: event.name, payload: event.payload })
+    .event-children
+      == partial('events', locals: { events: event.children })

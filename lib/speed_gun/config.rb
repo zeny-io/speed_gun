@@ -8,6 +8,7 @@ class SpeedGun::Config
 
   # @return [Boolean] Enabled SpeedGun
   attr_accessor :enabled
+  attr_accessor :webapp
 
   attr_accessor :store
 
@@ -22,6 +23,7 @@ class SpeedGun::Config
 
   def initialize
     @enabled = true
+    @webapp = true
     @store = SpeedGun::Store::MemoryStore.new
     @prefix = DEFAULT_PREFIX
     @logger = ::Logger.new(STDOUT)

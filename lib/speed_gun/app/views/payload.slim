@@ -1,0 +1,20 @@
+table.payload
+  - payload.each_pair do |key, val|
+    tr
+      td.payload-key= key
+      - case val
+      - when Hash
+        td.payload-value.table== partial('payload', locals: { name: key, payload: val })
+      - when Array
+        - if key == 'backtrace'
+          td.payload-value
+            ul.backtraces
+              - val.each do |bt|
+                li.backtrace
+                  a(href="#line-#{line_id(bt[0], bt[1])}")= bt.join(':')
+        - else
+          td= val.join(', ')
+      - when String, Integer
+        td= val
+      - else
+        td= val.inspect

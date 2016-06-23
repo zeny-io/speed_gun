@@ -10,6 +10,7 @@ class SpeedGun::Profiler::ActiveSupportNotificatiosProfiler < SpeedGun::Profiler
   end
 
   def self.record(event, name, started, ended, _id, payload, ignore_payload)
+    name = name.split('.').reverse.join('.')
     payload = payload.symbolize_keys
 
     ignore_payload.each do |key|

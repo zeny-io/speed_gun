@@ -4,6 +4,8 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
+    Net::HTTP.get(URI('https://google.com/'))
+
     @posts = Post.all
   end
 

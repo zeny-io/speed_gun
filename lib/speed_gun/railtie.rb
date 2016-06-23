@@ -5,6 +5,10 @@ require 'rack/speed_gun'
 require 'rails/railtie'
 
 class SpeedGun::Railtie < ::Rails::Railtie
+  config.to_prepare do
+    SpeedGun::Hook.install!
+  end
+
   initializer 'speed_gun' do |app|
     app.middleware.insert(0, Rack::SpeedGun)
 

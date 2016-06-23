@@ -3,6 +3,7 @@ require 'semantic'
 require 'speed_gun/version'
 require 'speed_gun/config'
 require 'speed_gun/report'
+require 'speed_gun/hook'
 require 'rack/speed_gun'
 require 'speed_gun/railtie' if defined?(::Rails)
 

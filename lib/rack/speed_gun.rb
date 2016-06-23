@@ -33,9 +33,7 @@ class Rack::SpeedGun
       SpeedGun.config.logger.debug(
         "Check out here: #{base_url(env)}/reports/#{SpeedGun.current_report.id}"
       ) if SpeedGun.config.webapp
-      Thread.start(SpeedGun.current_report) do |report|
-        SpeedGun.config.store.store(report)
-      end
+      SpeedGun.config.store.store(SpeedGun.current_report)
     end
     SpeedGun.current_report = nil
   end

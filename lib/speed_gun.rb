@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'semantic'
 require 'speed_gun/version'
 require 'speed_gun/config'
 require 'speed_gun/report'
@@ -7,6 +8,11 @@ require 'speed_gun/railtie' if defined?(::Rails)
 
 module SpeedGun
   class << self
+    # @return [Semantic::Version] Version
+    def version
+      @version ||= Semantic::Version.new(VERSION)
+    end
+
     # @return [SpeedGun::Config]
     def config
       @config ||= SpeedGun::Config.new

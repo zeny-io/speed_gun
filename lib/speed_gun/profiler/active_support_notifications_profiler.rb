@@ -19,7 +19,7 @@ class SpeedGun::Profiler::ActiveSupportNotificatiosProfiler < SpeedGun::Profiler
     payload[:backtrace] = backtrace
 
     event = SpeedGun::Event.new(name, payload, started, ended)
-    SpeedGun.current_report.record(event)
+    SpeedGun.record(event)
   end
 
   def self.backtrace

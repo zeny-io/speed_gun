@@ -41,5 +41,15 @@ module SpeedGun
     def get_report(id)
       config.store.load("SpeedGun::Report/#{id}")
     end
+
+    def get_backtrace(backtrace = caller(2))
+      backtrace = Rails.backtrace_cleaner.clean(backtrace) if defined?(Rails)
+
+      backtrace.map do |called|
+        filename, line, trace = *called.split(':', 3)
+        filename = File.expand_path(filename)
+        [filename, line.to_i, trace]
+      end
+    end
   end
 end

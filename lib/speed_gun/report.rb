@@ -6,6 +6,8 @@ class SpeedGun::Report
   # @return [String] Report ID
   attr_reader :id
 
+  attr_accessor :name
+
   # @return [Array<SpeedGun::Source>] Profiled source codes
   attr_reader :sources
 
@@ -32,6 +34,7 @@ class SpeedGun::Report
 
   def initialize
     @id = SecureRandom.uuid
+    @name = nil
     @sources = []
     @events = []
   end
@@ -58,6 +61,7 @@ class SpeedGun::Report
 
   def to_hash
     {
+      name: name,
       sources: sources.map { |source| [ source.id, source.to_hash ] },
       events: events.map { |event| [event.id, event.to_hash] }
     }

@@ -16,6 +16,8 @@ class SpeedGun::Profiler
   def profile(name = self.class.name, payload = {})
     started_at = Time.now
 
+    payload[:backtrace] ||= SpeedGun.get_backtrace
+
     event = SpeedGun::Event.new(name, payload, started_at)
     result = yield(event)
     event.finish!

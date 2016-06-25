@@ -24,10 +24,6 @@ class SpeedGun::Profiler::ActiveSupportNotificatiosProfiler < SpeedGun::Profiler
   end
 
   def self.backtrace
-    Rails.backtrace_cleaner.clean(caller[2..-1]).map do |called|
-      filename, line, trace = *called.split(':', 3)
-      filename = File.expand_path(filename)
-      [filename, line.to_i, trace]
-    end
+    SpeedGun.get_backtrace(caller(2))
   end
 end

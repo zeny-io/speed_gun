@@ -16,7 +16,9 @@ class Rack::SpeedGun
 
     return call_speed_gun_app(env) if under_speed_gun?(env)
 
-    SpeedGun.current_report = SpeedGun::Report.new
+    SpeedGun.current_report = SpeedGun::Report.new.tap do |report|
+      report.name = "#{env['REQUEST_METHOD']} #{env['PATH_INFO']}"
+    end
 
     SpeedGun::Profiler::RackProfiler.profile('rack', rack: rack_info(env), request: request_info(env)) do |event|
       res = SpeedGun::Profiler::LineProfiler.profile { @app.call(env) }

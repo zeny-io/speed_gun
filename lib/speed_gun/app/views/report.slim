@@ -5,12 +5,12 @@ html
     link(rel="stylesheet" href="#{File.join(SpeedGun.config.prefix, '/report.css')}")
     script(src="https://code.jquery.com/jquery-3.0.0.min.js")
     script(src="#{File.join(SpeedGun.config.prefix, '/report.js')}")
-    title #{@report.id} - Speed Gun
+    title #{@report.name || @report.id} - Speed Gun
   body
     #container
       #report
         h1.report-id
-          = @report.id
+          = @report.name || @report.name
           span.duration-ms= "% 4.1fms" % (@report.duration * 1000.0)
         .tabs
           a.tab-events(href="#events") Events

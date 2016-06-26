@@ -1,0 +1,35 @@
+#source-list
+  - sources.each do |source|
+    .source-link
+      a(href="#file-#{source_line_id(source.file, 0)}")
+        span.shortpath= File.basename(source.file)
+        span.fullpath= source.file
+#source-code
+  - sources.each do |source|
+    .source(id="file-#{source_line_id(source.file, 0)}")
+      h3.filename
+        a(href="#file-#{source_line_id(source.file, 0)}")
+          span.shortpath= File.basename(source.file)
+          span.fullpath= source.file
+      .source-code
+        .source-line
+          .line-info
+            .line-cpu CPU
+            .line-wall Wall
+            .line-allocs Allocs
+            .line-calls Calls
+            .line-no No.
+          .line-code Code
+        - source.lines.each do |line|
+          .source-line(id="line-#{source_line_id(source.file, line.line)}")
+            .line-info
+              a(href="#line-#{source_line_id(source.file, line.line)}")
+                .line-cpu= "% 8.1fms" % (line.cpu / 1000.0)
+                .line-wall= "% 8.1fms" % ((line.wall - line.cpu) / 1000.0)
+                .line-allocs= line.allocations
+                .line-calls= "% 4d" % line.calls
+                .line-no
+                  = "% 5d" % line.line
+            .line-code(id="line-code-#{source_line_id(source.file, line.line)}")= line.code
+
+

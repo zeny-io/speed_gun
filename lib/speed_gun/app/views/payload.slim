@@ -11,7 +11,7 @@ table.payload
             ul.backtraces
               - val.each do |bt|
                 li.backtrace
-                  a(href="#line-#{line_id(bt[0], bt[1])}")= bt.join(':')
+                  a(href="#line-#{source_line_id(bt[0], bt[1])}")= bt.join(':')
         - else
           td= val.join(', ')
       - when String, Integer

@@ -15,13 +15,15 @@ class SpeedGun::App < Sinatra::Base
   end
 
   helpers do
-    def line_id(filename, line)
-      Digest::SHA256.hexdigest("#{filename}:#{line}")
+    def source_line_id(filename, line)
+      (@source_line_ids ||= {}).fetch("#{filename}:#{line}") do |key|
+        Digest::MD5.hexdigest(key)
+      end
     end
   end
 
   get '/report.css' do
-    content_type 'text/css', :charset => 'utf-8'
+    content_type 'text/css', charset: 'utf-8'
     scss :report
   end
 
@@ -29,6 +31,7 @@ class SpeedGun::App < Sinatra::Base
     @report = SpeedGun.get_report(params[:id])
     halt 404 unless @report
 
+    @sources = @report.sources
     @events = treeish_events(@report.events)
 
     slim :report

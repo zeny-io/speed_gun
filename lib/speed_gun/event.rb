@@ -41,7 +41,7 @@ class SpeedGun::Event
 
   def finished?
     @finished_at
-  end
+end
 
   def roughly_finished_at
     finished_at || started_at

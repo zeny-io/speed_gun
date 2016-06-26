@@ -2,6 +2,7 @@ doctype 5
 html
   head
     meta(charset="UTF-8")
+    link(rel="stylesheet" href="#{File.join(SpeedGun.config.prefix, '/feather.css')}")
     link(rel="stylesheet" href="#{File.join(SpeedGun.config.prefix, '/report.css')}")
     script(src="https://code.jquery.com/jquery-3.0.0.min.js")
     script(src="#{File.join(SpeedGun.config.prefix, '/report.js')}")
@@ -11,47 +12,18 @@ html
       #report
         h1.report-id
           = @report.name || @report.name
-          span.duration-ms= "% 4.1fms" % (@report.duration * 1000.0)
+          span.duration-ms= "%04.1fms" % (@report.duration * 1000.0)
         .tabs
-          a.tab-events(href="#events") Events
-          a.tab-sources(href="#sources") Sources
+          a.active.tab.events(href="#events")
+            span.icon-bell
+            | Events
+          a.tab.sources(href="#sources")
+            span.icon-file
+            | Sources
 
       #details
         #events.active
           == partial('events', locals: { events: @events })
 
         #sources
-          #source-list
-            - @report.sources.each do |source|
-              .source-link
-                a(href="#file-#{line_id(source.file, 0)}")
-                  span.shortpath= File.basename(source.file)
-                  span.fullpath= source.file
-          #source-code
-            - @report.sources.each do |source|
-              .source(id="file-#{line_id(source.file, 0)}")
-                h3.filename
-                  a(href="#file-#{line_id(source.file, 0)}")
-                     span.shortpath= File.basename(source.file)
-                     span.fullpath= source.file
-                .source-code
-                  .line-infos
-                    .line-info.header
-                      .line-cpu CPU
-                      .line-wall Wall
-                      .line-allocs Allocs
-                      .line-calls Calls
-                      .line-no No.
-                    - source.lines.each do |line|
-                      .line-info(id="line-#{line_id(source.file, line.line)}")
-                        .line-cpu= "% 8.1fms" % (line.cpu / 1000.0)
-                        .line-wall= "% 8.1fms" % ((line.wall - line.cpu) / 1000.0)
-                        .line-allocs= line.allocations
-                        .line-calls= "% 4d" % line.calls
-                        .line-no
-                          a(href="#line-#{line_id(source.file, line.line)}")= "% 5d" % line.line
-                  pre.line-codes
-                    .line-code.header Code
-                    - source.lines.each do |line|
-                      .line-code(id="line-code-#{line_id(source.file, line.line)}")= line.code
-
+          == partial('sources', locals: { sources: @report.sources })

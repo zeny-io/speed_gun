@@ -187,6 +187,24 @@ html, body {
   .event-children {
     padding-left: 20px;
   }
+
+  .backtraces {
+    margin: 0;
+    padding: 0;
+    list-style: none outside;
+
+    .backtrace {
+      a {
+        display: block;
+        color: inherit;
+        text-decoration: none;
+
+        .icon-fast-forward {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
 }
 
 #sources {

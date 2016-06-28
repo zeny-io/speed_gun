@@ -11,7 +11,13 @@ table.payload
             ul.backtraces
               - val.each do |bt|
                 li.backtrace
-                  a(href="#line-#{source_line_id(bt[0], bt[1])}")= bt.join(':')
+                  a(href="#line-#{source_line_id(bt[0], bt[1])}")
+                    .backtrace-file
+                      = bt.first
+                      span.icon-fast-forward
+                    .backtrace-line
+                      = "at #{bt[1]}"
+                      = " in #{bt[2]}"
         - else
           td= val.join(', ')
       - when String, Integer

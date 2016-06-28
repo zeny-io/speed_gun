@@ -2,11 +2,15 @@
 
 [![Gem Version](https://badge.fury.io/rb/speed_gun.svg)](http://badge.fury.io/rb/speed_gun)
 
-**Work In Progress**
-
 > I feel the need... the need for speed!
 
 SpeedGun is a more better performance measurement tool for Rails and Rack applications.
+
+## Screenshots
+
+![Events View](http://zeny.io/products/speed_gun/events.png)
+
+![Sources View](http://zeny.io/products/speed_gun/sources.png)
 
 ## Installation
 
@@ -24,7 +28,10 @@ $ bundle install
 
 ## Usage
 
-TODO: Write usage instructions here
+1. Add speed_gun gem into your Rails project
+2. Send a request to your Rails application
+3. Speed gun reports profile page URL
+4. Check it
 
 ## Development
 

@@ -10,7 +10,11 @@ class SpeedGun::Railtie < ::Rails::Railtie
   end
 
   initializer 'speed_gun' do |app|
-    app.middleware.insert(0, Rack::SpeedGun)
+    if ActionDispatch.const_defined? :RequestId
+      app.config.middleware.insert_after ActionDispatch::RequestId, Rack::SpeedGun
+    else
+      app.config.middleware.insert_after Rack::MethodOverride, Rack::SpeedGun
+    end
 
     SpeedGun.configure do |config|
       config.logger = Rails.logger

@@ -1,7 +1,7 @@
 PATH
   remote: ../..
   specs:
-    speed_gun (2.0.0.pre.alpha.1)
+    speed_gun (2.0.0)
       msgpack
       rack
       rblineprof
@@ -181,4 +181,4 @@ DEPENDENCIES
   web-console (~> 2.0)
 
 BUNDLED WITH
-   1.12.4
+   1.12.5
